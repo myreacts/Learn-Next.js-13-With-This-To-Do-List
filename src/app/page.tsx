@@ -6,6 +6,14 @@ function getTodos() {
   return prisma.todo.findMany();
 }
 
+async function toggleToDo(id: string, complete: boolean) {
+  "use server";
+  await prisma.todo.update({
+    where: { id },
+    data: { complete },
+  });
+}
+
 export default async function Home() {
   // 新增一条数据
   /* await prisma.todo.create({
@@ -30,7 +38,7 @@ export default async function Home() {
       </header>
       <div className="pl-4">
         {todos.map((todo) => {
-          return <TodoItem key={todo.id} {...todo} />;
+          return <TodoItem key={todo.id} {...todo} toggleToDo={toggleToDo} />;
         })}
       </div>
     </>
